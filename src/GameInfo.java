@@ -2,6 +2,15 @@
 public class GameInfo {
     private Boolean isGameOver = false;
     private Player objPlayer;
+    private Ruangan objRuangan; //ruangan aktif
+
+    public Ruangan getObjRuangan() {
+        return objRuangan;
+    }
+
+    public void setObjRuangan(Ruangan objRuangan) {
+        this.objRuangan = objRuangan;
+    }
 
     public Player getObjPlayer() {
         return objPlayer;

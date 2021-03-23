@@ -2,7 +2,6 @@ import java.util.Scanner;
 
 public class GameEngine {
     // user interface game
-    boolean isStop = false;
     Scanner sc = new Scanner(System.in);
     Player objPlayer = new Player();
     Ruangan objRuangan = new Ruangan(); //cuma satu ruangan
@@ -16,11 +15,14 @@ public class GameEngine {
 
     //constructor
     public GameEngine() {
-        objGameInfo.setObjPlayer(objPlayer);
         //init ruangannya
         objRuangan.setObjGameInfo(objGameInfo);
         objRuangan.setDeskripsi("Ruangan kecil, dengan satu pintu dan jendela");
         objPlayer.setRuanganAktif(objRuangan);  //set ruangan aktif player
+        objPlayer.setObjGameInfo(objGameInfo);
+
+        objGameInfo.setObjPlayer(objPlayer);
+        objGameInfo.setObjRuangan(objRuangan);
     }
 
 

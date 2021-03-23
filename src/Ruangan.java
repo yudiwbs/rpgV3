@@ -1,10 +1,12 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static java.lang.String.format;
+
 public class Ruangan {
 
     private Pintu objPintu;
-    private Item  objKunci;
+    private NPC objNPC; 
     private Item  objRoti;
     private ArrayList<Item> arrItem = new ArrayList<>();
     private String deskripsi;
@@ -16,6 +18,7 @@ public class Ruangan {
     public void setObjGameInfo(GameInfo objGameInfo) {
         this.objGameInfo = objGameInfo;
         objPintu.setObjGameInfo(objGameInfo);
+        objNPC.setObjGameInfo(objGameInfo);
         for (Item objItem:arrItem) {
             objItem.setObjGameInfo(objGameInfo);
         }
@@ -25,19 +28,14 @@ public class Ruangan {
         // init ruangan
         // init pintu, kunci dan roti.
         objPintu = new Pintu();
-
-        objKunci = new Item("Kunci");
-        objKunci.setDeskripsi("Sebuah kunci kecil yang sudah agak berkarat");
-        objKunci.setObjRuangan(this);
+        objNPC = new NPC();
 
         objRoti  = new Item("Roti");
         objRoti.setDeskripsi("Roti rasa coklat dalam bungkusan plastik");
         objRoti.setObjRuangan(this);
 
         //tambah item ke array
-        arrItem.add(objKunci);
         arrItem.add(objRoti);
-
     }
 
     //aksi yang dapat dilakukan di ruangan
@@ -47,7 +45,7 @@ public class Ruangan {
 
         System.out.println("==== Pilihan Aksi pada Ruangan ===");
         int urutPil = 0;  //item, pintu
-        int subPil = 0;   //aksinya
+        int subPil;   //aksinya
 
         //aksi2 item
         System.out.println("Item di ruangan");
@@ -60,7 +58,7 @@ public class Ruangan {
             //print pilihan
             for (String strPil:arrPil) {
                 subPil++;
-                System.out.println(String.format("%d%d. %s ", urutPil, subPil, strPil));
+                System.out.printf("%d%d. %s %n", urutPil, subPil, strPil);
             }
         }
 
@@ -73,7 +71,17 @@ public class Ruangan {
         System.out.println("Pintu");
         for (String strPil:objPintu.getAksi()) {
             subPil++;
-            System.out.println(String.format("%d%d. %s ", urutPil, subPil, strPil));
+            System.out.printf("%d%d. %s %n", urutPil, subPil, strPil);
+        }
+        
+        // aksi2 NPC
+        urutPil++;
+        subPil = 0;
+        int pilNPC  = urutPil; //catat untuk pintu
+        System.out.println("NPC");
+        for (String strPil:objNPC.getAksi()) {
+            subPil++;
+            System.out.printf("%d%d. %s %n", urutPil, subPil, strPil);
         }
 
         System.out.print("Pilihan anda?");
@@ -81,10 +89,15 @@ public class Ruangan {
         System.out.println("--");
 
         //split pilihan dan subpilihan
+
         int pil    =  Integer.parseInt(strPil.substring(0,1)); //ambil digit pertama, asumsikan jumlah tidak lebih dari 10
         subPil     =  Integer.parseInt(strPil.substring(1,2)); //ambil digit kedua, asumsikan jumlah tidak lebih dari 10
-        if (pil ==pilPintu)  {
+
+        //tdk perlu if spt ini kalau sudah menggunakan inheritance
+        if (pil ==pilPintu) {
             objPintu.prosesAksi(subPil);  //aksi pintu
+        } else if (pil==pilNPC) {
+            objNPC.prosesAksi(subPil);
         } else {
             //item
             Item objItemPilih = arrItem.get(pil-1);
@@ -99,6 +112,9 @@ public class Ruangan {
         arrItem.remove(objItem);  //buang item
     }
 
+    public void addItem(Item objItem) {
+        arrItem.add(objItem);
+    }
 
     public String getDeskripsi() {
         return deskripsi;
